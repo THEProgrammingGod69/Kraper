@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+
+::selection {
+  background-color: #C0B7E8;
+  color: #302C42;
+}
+
+
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-void: #0B0C15;
+  --color-starlight: #F8FAFC;
+  --font-inter: Inter, sans-serif;
+
+  --animate-orb-float: orb-float 20s ease-in-out infinite;
+
+  @keyframes orb-float {
+
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+}
+
+:root {
+  --background: 240 10% 4%;
+  /* Void Black */
+  --foreground: 210 40% 98%;
+
+  --card: 240 10% 6%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 240 10% 4%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 263.4 70% 50.4%;
+  /* Nebula Purple */
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 263.4 70% 50.4%;
+
+  --radius: 1rem;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Base Styles */
+* {
+  border-color: rgba(255, 255, 255, 0.08);
+  /* border-glass */
+}
+
+body {
+  background-color: #302C42;
+  /* Hydra Base */
+  color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(192, 183, 232, 0.33);
+  /* Hydra Border */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-panel:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(192, 183, 232, 0.5);
+  box-shadow: 0 0 20px rgba(129, 118, 175, 0.2);
+  /* Hydra Purple glow */
+}
+
+/* Hydra Text Gradients */
+.text-gradient {
+  background: linear-gradient(91.57deg, #C0B7E8 -1.02%, #8176AF 36.25%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hydra Button Gradient */
+.btn-hydra {
+  background: linear-gradient(90deg, #8176AF 0%, #C0B7E8 100%);
+  color: #343045;
+  font-weight: 700;
+}
+
+/* Vector Background Pattern */
+.vector-bg {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}

@@ -23,7 +23,7 @@ export const staggerContainer: Variants = {
 
 export const scaleOnHover = {
     whileHover: { scale: 1.05 },
-    transition: { type: "spring", stiffness: 300 }
+    transition: { type: "spring" as const, stiffness: 300 }
 };
 
 export const slideInLeft: Variants = {
@@ -48,7 +48,7 @@ export const pulseGlow = {
         transition: {
             duration: 2,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: "easeInOut" as const
         }
     }
 };

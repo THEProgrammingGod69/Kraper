@@ -27,3 +27,10 @@ tiktoken==0.5.2
 
 # Optional: For better text chunking
 nltk==3.8.1
+
+# Production Server (for Render/Heroku)
+gunicorn==21.2.0
+
+# Web Scraping (for conferences)
+requests==2.31.0
+beautifulsoup4==4.12.2

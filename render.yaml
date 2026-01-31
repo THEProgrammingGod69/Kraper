@@ -1,0 +1,25 @@
+# Render Blueprint Configuration
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: kraper-backend
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: rag_service
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_HOST
+        value: 0.0.0.0
+      - key: LLM_PROVIDER
+        value: groq
+      - key: MODEL_NAME
+        value: llama3-8b-8192
+      - key: GROQ_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: PYTHON_VERSION
+        value: 3.11.0

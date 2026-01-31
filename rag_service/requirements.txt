@@ -11,14 +11,16 @@ langchain-community==0.0.10
 
 # Vector Store & Embeddings
 faiss-cpu
-sentence-transformers==2.2.2
+# Explicitly install torch CPU version first to keep slug size down and ensure compatibility
+torch==2.2.0 --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers==2.5.1
 
 # PDF Processing
 pypdf==3.17.4
 pdfplumber==0.10.3
 
 # LLM Client (OpenAI-compatible for Groq/Together/Fireworks)
-openai==1.6.1
+openai==1.12.0
 
 # Utilities
 python-dotenv==1.0.0

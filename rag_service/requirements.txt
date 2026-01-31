@@ -1,0 +1,29 @@
+# Python RAG Service Dependencies
+# Install with: pip install -r requirements.txt
+
+# Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+
+# LangChain Ecosystem
+langchain==0.1.0
+langchain-community==0.0.10
+
+# Vector Store & Embeddings
+faiss-cpu
+sentence-transformers==2.2.2
+
+# PDF Processing
+pypdf==3.17.4
+pdfplumber==0.10.3
+
+# LLM Client (OpenAI-compatible for Groq/Together/Fireworks)
+openai==1.6.1
+
+# Utilities
+python-dotenv==1.0.0
+numpy==1.24.3
+tiktoken==0.5.2
+
+# Optional: For better text chunking
+nltk==3.8.1

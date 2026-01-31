@@ -1,0 +1,11 @@
+{
+    "research_domain": "Natural Language Processing",
+    "problem_statement": "Improving sentiment analysis accuracy on social media posts with limited labeled data and noisy text containing slang, emojis, and abbreviations",
+    "methodology": "Fine-tuned BERT-based transformer model with custom preprocessing pipeline and semi-supervised learning approach using pseudo-labeling on unlabeled data",
+    "dataset_description": "Twitter sentiment dataset containing 50,000 tweets (25,000 labeled, 25,000 unlabeled) covering technology, politics, and entertainment topics with balanced positive/negative distribution",
+    "evaluation_metrics": "Accuracy, Precision, Recall, F1-Score, and Cohen's Kappa for inter-annotator agreement",
+    "target_section": "Abstract",
+    "key_contributions": "Novel preprocessing technique for social media text normalization and semi-supervised learning framework that reduces labeled data requirements by 40%",
+    "related_work": "Previous approaches using traditional ML (SVM, Naive Bayes) achieved 75-80% accuracy. Recent transformer models (RoBERTa, DistilBERT) reached 85-88% on clean text but struggled with social media data",
+    "max_tokens": 800
+}

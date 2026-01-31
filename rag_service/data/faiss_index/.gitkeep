@@ -1,0 +1,6 @@
+# .gitkeep - Placeholder for FAISS index directory
+# The FAISS vector database will be created here by core/ingest.py
+
+# Generated files:
+# - index.faiss
+# - index.pkl

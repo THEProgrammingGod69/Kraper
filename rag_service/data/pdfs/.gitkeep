@@ -1,0 +1,9 @@
+# .gitkeep - Placeholder to ensure directory exists in git
+# Place your research paper PDFs here (80 PDF files)
+
+# Expected format:
+# - paper1.pdf
+# - paper2.pdf
+# - ...
+
+# This directory will be scanned by core/ingest.py

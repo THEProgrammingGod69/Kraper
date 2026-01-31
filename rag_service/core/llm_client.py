@@ -51,6 +51,10 @@ class CloudLLMClient:
             'openai': {
                 'api_key': os.getenv('OPENAI_API_KEY'),
                 'base_url': None  # Uses default OpenAI endpoint
+            },
+            'fastrouter': {
+                'api_key': os.getenv('FASTROUTER_API_KEY'),
+                'base_url': 'https://go.fastrouter.ai/api/v1'
             }
         }
         
@@ -82,7 +86,8 @@ class CloudLLMClient:
             'groq': 'llama-3.1-8b-instant',
             'together': 'meta-llama/Llama-3-8b-chat-hf',
             'fireworks': 'accounts/fireworks/models/llama-v3-8b-instruct',
-            'openai': 'gpt-3.5-turbo'  # Fallback
+            'openai': 'gpt-3.5-turbo',
+            'fastrouter': 'meta-llama/llama-3.1-8b-instant'
         }
         
         return default_models.get(self.provider, 'llama3-8b-8192')

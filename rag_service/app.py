@@ -25,7 +25,7 @@ CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Configuration
 FLASK_HOST = os.getenv('FLASK_HOST', '0.0.0.0')
-FLASK_PORT = int(os.getenv('FLASK_PORT', 5000))
+FLASK_PORT = int(os.getenv('FLASK_PORT', 5002))
 FLASK_ENV = os.getenv('FLASK_ENV', 'development')
 
 # Initialize RAG pipeline
@@ -84,12 +84,38 @@ def generate_paper():
         }), 500
 
 
-if __name__ == '__main__':
-    app.run(
-        host=FLASK_HOST,
-        port=FLASK_PORT,
-        debug=(FLASK_ENV == 'development')
-    )
+
+
+from core.conference_scraper import ConferenceScraper
+
+# Initialize Scraper
+scraper = ConferenceScraper()
+
+@app.route('/conferences', methods=['POST', 'OPTIONS'])
+@cross_origin()
+def get_conferences():
+    """
+    Get conferences for a domain
+    Accepts: { domain: "keywords" }
+    """
+    try:
+        data = request.get_json()
+        domain = data.get('domain', 'General')
+        
+        # Scrape
+        results = scraper.get_conferences(domain)
+        
+        return jsonify({
+            "status": "success",
+            "count": len(results),
+            "data": results
+        }), 200
+    except Exception as e:
+        print(f"❌ Error in /conferences: {e}")
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 
 
 if __name__ == '__main__':

@@ -1,393 +1,216 @@
-# AI-Powered Research Paper Generator - Backend
+# Kraper: AI-Powered Academic Research Assistant
 
-A complete backend system for generating academically-formatted research paper text using Retrieval-Augmented Generation (RAG) and cloud-hosted LLaMA 3 8B Instruct model.
+![Project Banner](https://img.shields.io/badge/Status-Production-green) ![License](https://img.shields.io/badge/License-MIT-blue) ![Version](https://img.shields.io/badge/Version-2.0-purple)
 
-## 🏗️ Architecture
+## 📖 Project Overview
 
-```
-┌─────────────┐
-│   Client    │
-│  (Frontend) │
-└──────┬──────┘
-       │ JSON Request
-       ▼
-┌─────────────────────────────────────┐
-│     Node.js Express Server          │
-│  (API Gateway - Port 3000)          │
-│  • Request validation               │
-│  • Orchestration                    │
-│  • Response formatting              │
-└────────────┬────────────────────────┘
-             │ HTTP POST
-             ▼
-┌─────────────────────────────────────┐
-│   Python Flask RAG Service          │
-│     (AI Layer - Port 5000)          │
-│  • PDF Processing                   │
-│  • FAISS Vector Search              │
-│  • Prompt Engineering               │
-│  • LLaMA 3 8B API Calls             │
-└─────────────────────────────────────┘
-```
+**Kraper** is an advanced AI-powered platform designed to democratize academic writing. It automates the generation of IEEE-formatted research papers, helps users find relevant conferences, and assists in structuring complex academic arguments.
 
-## 🎯 Key Features
+By combining **RAG (Retrieval-Augmented Generation)** with **Multi-Agent Orchestration**, Kraper ensures that generated content is not just grammatically correct but technically grounded, cited, and structurally sound.
 
-- **Modular Design**: Strict separation between Node.js (orchestration) and Python (AI logic)
-- **RAG Pipeline**: Retrieves relevant research paper context before generation
-- **IEEE-Style Prompts**: Enforces academic writing standards (formal tone, third-person, citations)
-- **Cloud LLM**: Supports Groq, Together AI, Fireworks AI, and OpenAI APIs
-- **No GPU Required**: Uses CPU-based FAISS and Sentence-Transformers
-- **Beginner-Friendly**: Clear code structure with extensive comments
+### 🚀 The Problem
+- **Writer's Block:** Students and researchers struggle to start writing complex sections.
+- **Formatting Hell:** Adhering to strict IEEE/Springer formats is tedious.
+- **Discovery:** Finding the right customized list of conferences for a niche topic is difficult.
 
-## 📁 Project Structure
-
-```
-x:/AIBhoomi/Kraper2.0/
-│
-├── server/                          # Node.js Express API Gateway
-│   ├── src/
-│   │   ├── app.js                   # Main Express app
-│   │   ├── routes.js                # API route definitions
-│   │   ├── controllers/
-│   │   │   └── generatorController.js
-│   │   └── utils/
-│   │       └── validator.js         # Joi validation schemas
-│   ├── package.json
-│   └── .env.example
-│
-└── rag_service/                     # Python RAG Microservice
-    ├── core/
-    │   ├── ingest.py                # PDF → FAISS pipeline
-    │   ├── rag_pipeline.py          # Retrieval + Generation logic
-    │   └── llm_client.py            # Cloud LLM abstraction
-    ├── config/
-    │   └── prompts.py               # IEEE-style prompt templates
-    ├── data/
-    │   ├── pdfs/                    # Place your 80 PDFs here
-    │   └── faiss_index/             # Generated vector database
-    ├── app.py                       # Flask API server
-    ├── requirements.txt
-    └── .env.example
-```
-
-## 🚀 Setup Instructions
-
-### Prerequisites
-
-- **Node.js** 18+ and npm
-- **Python** 3.9+
-- **Cloud LLM API Key** (Groq/Together/Fireworks)
-
-### Step 1: Clone & Navigate
-
-```bash
-cd x:/AIBhoomi/Kraper2.0
-```
-
-### Step 2: Set Up Node.js Server
-
-```bash
-cd server
-npm install
-cp .env.example .env
-```
-
-Edit `server/.env` and configure:
-```env
-PORT=3000
-PYTHON_SERVICE_URL=http://localhost:5000
-```
-
-### Step 3: Set Up Python RAG Service
-
-```bash
-cd ../rag_service
-python -m venv venv
-venv\Scripts\activate          # On Windows
-# source venv/bin/activate     # On Linux/Mac
-
-pip install -r requirements.txt
-cp .env.example .env
-```
-
-Edit `rag_service/.env` and configure:
-```env
-LLM_PROVIDER=groq              # or together, fireworks
-GROQ_API_KEY=your_api_key_here
-MODEL_NAME=llama-3.1-8b-instant
-```
-
-### Step 4: Add Research Papers
-
-Place your 80 research paper PDFs in:
-```
-rag_service/data/pdfs/
-```
-
-### Step 5: Build FAISS Index
-
-**⚠️ Run this ONCE before starting the server:**
-
-```bash
-cd rag_service
-python core/ingest.py
-```
-
-This will:
-- Load all PDFs
-- Chunk the text
-- Create embeddings (using HuggingFace model)
-- Build and save FAISS vector database
-
-Expected output:
-```
-✓ Processed PDFs: 240 pages
-✓ Total chunks: 1523
-✓ Index saved to: ./data/faiss_index
-```
-
-### Step 6: Start Both Services
-
-**Terminal 1 (Python RAG Service):**
-```bash
-cd rag_service
-python app.py
-```
-
-**Terminal 2 (Node.js Server):**
-```bash
-cd server
-npm start
-```
-
-## 📡 API Usage
-
-### Endpoint: `POST /api/v1/generate`
-
-**Request:**
-```json
-{
-  "research_domain": "Computer Vision",
-  "problem_statement": "Object detection in low-light conditions",
-  "methodology": "Enhanced YOLO with attention mechanisms",
-  "dataset_description": "Custom dataset with 10,000 images",
-  "evaluation_metrics": "mAP, Precision, Recall, F1-Score",
-  "target_section": "Abstract",
-  "max_tokens": 800
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "generated_text": "Object detection in...",
-    "section": "Abstract",
-    "metadata": {
-      "research_domain": "Computer Vision",
-      "retrieved_chunks": 5,
-      "model_used": "llama-3.1-8b-instant",
-      "processing_time_ms": 3241,
-      "timestamp": "2026-01-31T08:05:12.345Z"
-    }
-  }
-}
-```
-
-### Health Check: `GET /api/v1/status`
-
-```json
-{
-  "node_service": "healthy",
-  "python_service": "healthy",
-  "python_url": "http://localhost:5000"
-}
-```
-
-## 🔧 Configuration Options
-
-### Supported Sections
-
-- `Abstract`
-- `Introduction`
-- `Literature Review`
-- `Methodology`
-- `Results`
-- `Discussion`
-- `Conclusion`
-- `Future Work`
-
-### Environment Variables
-
-**Node.js (`server/.env`):**
-- `PORT`: Server port (default: 3000)
-- `PYTHON_SERVICE_URL`: Python service URL
-- `REQUEST_TIMEOUT`: Timeout in ms (default: 120000)
-
-**Python (`rag_service/.env`):**
-- `LLM_PROVIDER`: groq | together | fireworks | openai
-- `GROQ_API_KEY`: Your Groq API key
-- `MODEL_NAME`: llama-3.1-8b-instant (or other compatible model)
-- `CHUNK_SIZE`: Text chunk size (default: 1000)
-- `CHUNK_OVERLAP`: Overlap between chunks (default: 200)
-- `TOP_K_RETRIEVAL`: Number of chunks to retrieve (default: 5)
-- `TEMPERATURE`: LLM temperature (default: 0.3)
-
-## 🧪 Testing
-
-### Test Python Service Directly
-
-```bash
-curl -X POST http://localhost:5000/generate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "research_domain": "Machine Learning",
-    "problem_statement": "Sentiment analysis on social media",
-    "methodology": "BERT-based transformer model",
-    "dataset_description": "Twitter dataset with 50k tweets",
-    "evaluation_metrics": "Accuracy, F1-Score",
-    "target_section": "Abstract"
-  }'
-```
-
-### Test Node.js Gateway
-
-```bash
-curl -X POST http://localhost:3000/api/v1/generate \
-  -H "Content-Type: application/json" \
-  -d @test_request.json
-```
-
-## 🎓 Academic Writing Standards
-
-The system enforces **IEEE-style academic writing**:
-
-✅ **Required:**
-- Third-person narrative only
-- Passive voice ("The system was designed...")
-- Formal technical language
-- Structured sections following IEEE format
-- Citation placeholders ([1], [2])
-
-❌ **Forbidden:**
-- First-person ("I", "we", "our")
-- Casual language
-- Fabricated experimental results
-- Unsupported claims
-
-## 🔌 Integration with Frontend
-
-This backend is **frontend-agnostic**. Connect any frontend framework:
-
-**Example (React/Next.js):**
-```javascript
-const response = await fetch('http://localhost:3000/api/v1/generate', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    research_domain: 'NLP',
-    problem_statement: '...',
-    methodology: '...',
-    dataset_description: '...',
-    evaluation_metrics: '...',
-    target_section: 'Abstract'
-  })
-});
-
-const data = await response.json();
-console.log(data.data.generated_text);
-```
-
-## 🛠️ Troubleshooting
-
-### Python service unreachable
-- Ensure both services are running
-- Check `PYTHON_SERVICE_URL` in Node `.env`
-- Verify ports 3000 and 5000 are not in use
-
-### FAISS index not found
-- Run `python core/ingest.py` first
-- Check `FAISS_INDEX_PATH` in Python `.env`
-
-### LLM API errors
-- Verify API key in `.env`
-- Check API quota/limits
-- Test with curl directly
-
-### PDF ingestion fails
-- Ensure PDFs are in `rag_service/data/pdfs/`
-- Check file permissions
-- Verify PDF files are not corrupted
-
-## 📚 Technology Stack
-
-**Backend Framework:**
-- Express.js (Node.js)
-- Flask (Python)
-
-**Validation & Security:**
-- Joi (request validation)
-- Helmet (security headers)
-- CORS (cross-origin)
-
-**AI/ML:**
-- LangChain (RAG orchestration)
-- FAISS (vector database)
-- Sentence-Transformers (embeddings)
-- Cloud LLM APIs (inference)
-
-## 📝 Code Explanations
-
-### Node.js Flow
-1. **app.js**: Sets up Express with middleware
-2. **routes.js**: Defines `/generate` endpoint
-3. **validator.js**: Validates questionnaire with Joi
-4. **generatorController.js**: Forwards request to Python, handles errors
-
-### Python Flow
-1. **app.py**: Flask server with `/generate` endpoint
-2. **rag_pipeline.py**: Orchestrates retrieval + generation
-3. **llm_client.py**: Abstracts cloud API calls
-4. **prompts.py**: Contains IEEE-style templates
-5. **ingest.py**: One-time PDF → FAISS conversion
-
-## 🎯 Design Decisions
-
-1. **Why separate Node and Python?**
-   - Node: Better for web/API handling
-   - Python: Superior AI/ML ecosystem
-
-2. **Why FAISS over other vector DBs?**
-   - CPU-friendly (no GPU needed)
-   - Fast similarity search
-   - Simple to deploy
-
-3. **Why Cloud LLM instead of local?**
-   - No GPU requirement (per constraints)
-   - Better performance
-   - Lower maintenance
-
-4. **Why strict prompt engineering?**
-   - Ensures academic quality
-   - Prevents hallucinations
-   - Maintains IEEE standards
-
-## 🚀 Next Steps
-
-- [ ] Add authentication/authorization
-- [ ] Implement caching for repeated queries
-- [ ] Add support for multiple vector stores
-- [ ] Create frontend UI
-- [ ] Add monitoring/logging
-- [ ] Deploy to cloud (AWS/Azure/GCP)
-
-## 📄 License
-
-MIT License - Free for educational and commercial use.
+### 💡 The Solution
+A unified workspace where users provide a research topic, and Kraper:
+1.  **Generates** full paper sections (Abstract, Methodology, etc.) using grounded RAG.
+2.  **Scrapes** real-time conference data relevant to the topic.
+3.  **Refines** content to meet academic standards.
 
 ---
 
-**Built for college final-year AI projects** 🎓
+## 🎥 Product Demo
 
-For questions or issues, refer to the inline code comments or check the logs.
+> **[View Live Application](#)** *(Replace with actual link)*
+>
+> **[Watch Demo Video](#)** *(Replace with YouTube/Loom link)*
+
+---
+
+## 🏗️ System Architecture
+
+Kraper uses a decoupled microservices architecture optimized for cloud deployment.
+
+```mermaid
+graph TD
+    User[👤 User] -->|HTTPS| Frontend[🖥️ Next.js Frontend (Netlify)]
+    Frontend -->|Direct API Call| Backend[🐍 Python RAG Service (Render)]
+    
+    subgraph "Cloud Backend Layer"
+        Backend -->|Query| Router[⚡ FastRouter / LLM Gateway]
+        Router -->|Inference| Llama3[🦙 Llama-3-8B-Instruct]
+        Backend -->|Similarity Search| FAISS[📚 FAISS Vector Store]
+        Backend -->|Scrape| WikiCFP[🌐 WikiCFP / OpenAlex]
+    end
+    
+    subgraph "Data Pipeline"
+        PDFs[📄 PDF Documents] -->|Ingest| Embeddings[🔢 Embeddings Model]
+        Embeddings -->|Index| FAISS
+    end
+```
+
+---
+
+## 🛠️ Technology Stack
+
+### **Frontend (Client-Side)**
+-   **Framework:** [Next.js 14](https://nextjs.org/) (React)
+-   **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+-   **Animations:** Framer Motion & GSAP
+-   **Deployment:** Netlify
+
+### **Backend (Server-Side)**
+-   **Core:** Python Flask
+-   **WSGI Server:** Gunicorn (Production)
+-   **Vector Store:** FAISS (Facebook AI Similarity Search)
+-   **Orchestration:** LangChain
+-   **Scraping:** BeautifulSoup4, Requests
+-   **Deployment:** Render
+
+### **AI & Models**
+-   **LLM:** Llama-3-8B-Instruct (via FastRouter)
+-   **Embeddings:** `sentence-transformers/all-MiniLM-L6-v2`
+-   **Routing:** FastRouter (High-availability LLM gateway)
+
+---
+
+## 🧠 Algorithms & Logic
+
+### 1. Retrieval-Augmented Generation (RAG) Flow
+Context-aware generation reduces hallucinations by grounding the LLM in real data.
+
+1.  **Ingestion:**
+    -   Academic PDFs are loaded from `data/pdfs/`.
+    -   Splitted into 1000-character chunks with 200-char overlap.
+    -   Converted to vectors using `all-MiniLM-L6-v2`.
+2.  **Retrieval:**
+    -   User query -> Vector Embedding.
+    -   Search FAISS index for top-k (k=5) most similar chunks.
+3.  **Generation:**
+    -   `Context` + `User Query` + `IEEE Prompt Template` -> LLM.
+    -   Output: Formatted academic text with potential citations.
+
+### 2. Multi-Source Conference Scraping
+A resilient scraper that aggregates data from multiple sources:
+
+```mermaid
+flowchart LR
+    Start([User Request]) --> Scraper{Scraper Engine}
+    Scraper -->|Try 1| WikiCFP[WikiCFP Direct]
+    Scraper -->|Try 2| OpenAlex[OpenAlex API]
+    Scraper -->|Try 3| LLMGen[LLM Estimation]
+    
+    WikiCFP -->|Fail/Block| OpenAlex
+    OpenAlex -->|Fail| LLMGen
+    LLMGen -->|Fail| Fallback[Static Fallback List]
+    
+    WikiCFP -->|Success| Enrich[Enrichment Layer]
+    OpenAlex -->|Success| Enrich
+    LLMGen -->|Success| Enrich
+    Fallback -->|Success| Enrich
+    
+    Enrich -->|Guess Impact Factor| FastRouter
+    Enrich -->|Final JSON| UI[Frontend UI]
+```
+
+---
+
+## � Key Features
+
+### ✨ **Project Studio**
+A dedicated workspace to generate, edit, and export research papers.
+-   **Step-by-Step Wizard:** Guides you through Problem Statement -> Methodology -> Results.
+-   **Section Generators:** Generate specific sections (e.g., "Write the Literature Review").
+
+### 🔎 **Conference Finder**
+Real-time discovery of venues for your work.
+-   **Smart Filtering:** Finds conferences based on your specific research domain (e.g., "AI in Healthcare").
+-   **Impact Estimation:** Uses AI to estimate impact factors if data is missing.
+
+### 📝 **IEEE Formatting Engine**
+-   Ensures output follows "Third-person passive voice".
+-   Structures content with proper headers (I. INTRODUCTION, II. METHODOLOGY).
+
+---
+
+## � Installation & Setup
+
+### Prerequisites
+-   Node.js 18+
+-   Python 3.11+
+-   Git
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/THEProgrammingGod69/Kraper.git
+cd Kraper
+```
+
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+# Running on http://localhost:3000
+```
+
+### 3. Backend Setup
+```bash
+cd ../rag_service
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+# source venv/bin/activate
+
+pip install -r requirements.txt
+
+# Create .env file
+cp .env.example .env
+# Edit .env with your FASTROUTER_API_KEY
+```
+
+### 4. Build Vector Index (Optimization)
+Before running the backend, ingest your PDFs to build the FAISS index:
+```bash
+python core/ingest.py
+```
+
+### 5. Start Backend
+```bash
+python app.py
+# Running on http://localhost:5002
+```
+
+---
+
+## ☁️ Deployment
+
+### Backend (Render)
+1.  Push code to GitHub.
+2.  Create new **Web Service** on Render.
+3.  **Build Command:** `pip install -r requirements.txt`
+4.  **Start Command:** `gunicorn app:app --bind 0.0.0.0:$PORT`
+5.  **Environment Variables:**
+    -   `PYTHON_VERSION`: `3.11.0`
+    -   `FASTROUTER_API_KEY`: `...`
+    -   `LLM_PROVIDER`: `fastrouter`
+
+### Frontend (Netlify)
+1.  Import repository to Netlify.
+2.  **Build Command:** `npm run build`
+3.  **Publish Directory:** `.next`
+4.  **Environment Variables:**
+    -   `NEXT_PUBLIC_API_URL`: `https://your-render-backend.onrender.com`
+
+---
+
+## �️ License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+**Developed with ❤️ by the Kraper Team**

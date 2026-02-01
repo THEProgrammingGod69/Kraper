@@ -40,18 +40,18 @@ Kraper uses a decoupled microservices architecture optimized for cloud deploymen
 
 ```mermaid
 graph TD
-    User[👤 User] -->|HTTPS| Frontend[🖥️ Next.js Frontend (Netlify)]
-    Frontend -->|Direct API Call| Backend[🐍 Python RAG Service (Render)]
+    User["👤 User"] -->|HTTPS| Frontend["🖥️ Next.js Frontend (Netlify)"]
+    Frontend -->|Direct API Call| Backend["🐍 Python RAG Service (Render)"]
     
     subgraph "Cloud Backend Layer"
-        Backend -->|Query| Router[⚡ FastRouter / LLM Gateway]
-        Router -->|Inference| Llama3[🦙 Llama-3-8B-Instruct]
-        Backend -->|Similarity Search| FAISS[📚 FAISS Vector Store]
-        Backend -->|Scrape| WikiCFP[🌐 WikiCFP / OpenAlex]
+        Backend -->|Query| Router["⚡ FastRouter / LLM Gateway"]
+        Router -->|Inference| Llama3["🦙 Llama-3-8B-Instruct"]
+        Backend -->|Similarity Search| FAISS["📚 FAISS Vector Store"]
+        Backend -->|Scrape| WikiCFP["🌐 WikiCFP / OpenAlex"]
     end
     
     subgraph "Data Pipeline"
-        PDFs[📄 PDF Documents] -->|Ingest| Embeddings[🔢 Embeddings Model]
+        PDFs["📄 PDF Documents"] -->|Ingest| Embeddings["🔢 Embeddings Model"]
         Embeddings -->|Index| FAISS
     end
 ```
@@ -76,7 +76,7 @@ graph TD
 
 ### **AI & Models**
 -   **LLM:** Llama-3-8B-Instruct (via FastRouter)
--   **Embeddings:** `sentence-transformers/all-MiniLM-L6-v2`
+-   **Embeddings:** `Claude Sonnet 4 (anthropic/claude-sonnet-4-20250514)`
 -   **Routing:** FastRouter (High-availability LLM gateway)
 
 ---

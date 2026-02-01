@@ -222,5 +222,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 Arnav Sirse
 --- 
-Arya Ambedkar 
+Arya Ambekar 
 ---

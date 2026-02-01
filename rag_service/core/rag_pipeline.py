@@ -49,17 +49,20 @@ class RAGPipeline:
         
         # Load FAISS index
         print(f"   Loading FAISS index: {FAISS_INDEX_PATH}")
-        if not Path(FAISS_INDEX_PATH).exists():
-            raise FileNotFoundError(
-                f"FAISS index not found at {FAISS_INDEX_PATH}. "
-                f"Please run 'python core/ingest.py' first to create the index."
-            )
-        
-        self.vectorstore = FAISS.load_local(
-            FAISS_INDEX_PATH, 
-            self.embeddings,
-            allow_dangerous_deserialization=True  # Required for FAISS
-        )
+        if Path(FAISS_INDEX_PATH).exists():
+            try:
+                self.vectorstore = FAISS.load_local(
+                    FAISS_INDEX_PATH, 
+                    self.embeddings,
+                    allow_dangerous_deserialization=True
+                )
+                print("   ✓ FAISS index loaded successfully")
+            except Exception as e:
+                print(f"   ⚠️ Failed to load FAISS index: {e}")
+                self.vectorstore = None
+        else:
+            print(f"   ⚠️ FAISS index not found at {FAISS_INDEX_PATH}. Starting in pure LLM mode (no RAG).")
+            self.vectorstore = None
         
         # Initialize LLM client
         self.llm_client = get_llm_client()
@@ -88,7 +91,14 @@ class RAGPipeline:
         """
         
         # Perform similarity search
-        docs = self.vectorstore.similarity_search(query, k=top_k)
+        docs = []
+        if self.vectorstore:
+            try:
+                docs = self.vectorstore.similarity_search(query, k=top_k)
+            except Exception as e:
+                print(f"   ⚠️ Vector search error: {e}")
+        else:
+            print("   ℹ️ No vector store loaded. Skipping retrieval.")
         
         if not docs:
             print("   ⚠️ No relevant documents found. Switching to KNOWLEDGE-BASED generation.")

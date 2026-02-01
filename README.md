@@ -218,6 +218,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-**Developed with ❤️ by the Kraper Team**
-Arnav Sirse 
+**Developed by the Kraper Team**
+---
+Arnav Sirse
+--- 
 Arya ambekar 

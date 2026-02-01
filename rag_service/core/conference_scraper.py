@@ -187,7 +187,8 @@ class ConferenceScraper:
                 "https://fastrouter.302.ai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
                 json=payload,
-                timeout=20
+                timeout=20,
+                verify=False  # Bypass SSL verify for Render
             )
 
             if response.status_code == 200:
@@ -351,7 +352,8 @@ class ConferenceScraper:
                 "https://fastrouter.302.ai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
                 json=payload,
-                timeout=25
+                timeout=25,
+                verify=False # Bypass SSL verify for Render
             )
             
             if response.status_code == 200:

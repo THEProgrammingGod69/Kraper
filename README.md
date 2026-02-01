@@ -21,11 +21,16 @@ A unified workspace where users provide a research topic, and Kraper:
 
 ---
 
-## 🎥 Product Demo
+## 🎥 Project Showcase
 
-> **[View Live Application](#)** *(Replace with actual link)*
+> **[🚀 Live Product Demo](https://kraper.netlify.app/)**
+> *Experience the AI-powered research assistant in action. Generate papers and find conferences instantly.*
 >
-> **[Watch Demo Video](#)** *(Replace with YouTube/Loom link)*
+> **[📹 Video Prototype](https://drive.google.com/file/d/1Kp19ZJYyGT1bmJ_jltMo4DgBcBKUb6im/view?usp=sharing)**
+> *Watch a comprehensive walkthrough of the core features and user journey.*
+>
+> **[📊 Pitch Deck](https://www.canva.com/design/DAHABce4mag/8UNFyXMu17nuVv95FoYi4A/edit?utm_content=DAHABce4mag&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)**
+> *View our presentation covering the vision, problem statement, solution architecture, and market analysis.*
 
 ---
 

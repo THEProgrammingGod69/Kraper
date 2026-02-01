@@ -54,6 +54,11 @@ def health_check():
     }), 200
 
 
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({'status': 'running', 'message': 'Kraper RAG Service'}), 200
+
+
 @app.route('/generate', methods=['POST', 'OPTIONS'])
 @cross_origin()
 def generate_paper():
